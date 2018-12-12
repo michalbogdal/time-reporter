@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 
 
 @SpringBootApplication
-open class TimeReportApplication {
+class TimeReportApplication {
 
    companion object {
         @JvmStatic fun main(args: Array<String>) {
