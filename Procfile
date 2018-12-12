@@ -1,1 +1,1 @@
-web: java -jar build/libs/kotlin-getting-started.jar
+web: java -jar build/libs/*.jar
