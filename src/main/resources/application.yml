@@ -21,7 +21,11 @@ spring:
       database-platform: org.hibernate.dialect.PostgreSQL82Dialect
       hibernate:
         ddl-auto: update
-
+      properties:
+        hibernate:
+          jdbc:
+            lob:
+              non_contextual_creation: true
   thymeleaf:
       check-template-location: false
       prefix: classpath:templates/
