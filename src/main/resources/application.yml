@@ -40,4 +40,4 @@ server:
 
 authentication:
   jwt:
-    secret: changeThisSecret123##&6332
+    secret: ${JWT_APP_SECRET}
