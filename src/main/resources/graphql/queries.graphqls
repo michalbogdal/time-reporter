@@ -1,0 +1,58 @@
+type Query {
+    version: String!
+    timeReport(forYear: Int!, forMonth: Int!, onlyActiveDays: Boolean = true): TimeReport
+}
+
+type TimeReport {
+    id: Int!
+    forYear: Int!
+    forMonth: Int!
+    events: [DayEvent]!
+    expectedHours: Int!
+    reportedHours: Float!
+}
+
+type DayEvent {
+    id: Int!
+    date: String!
+    type: DayEventType!
+    workTime: TimeRange!
+    breakTime: TimeRange!
+    textRepresentation: String!
+    createTime: String!
+    closeTime: String
+}
+
+
+enum DayEventType {
+    OFFICE
+    WFH
+}
+
+type TimeRange {
+    from: String!
+    to: String!
+}
+
+input TimeRangeInput{
+    from: String!
+    to: String!
+}
+
+input DayEventInput{
+    date: String!,
+    type: DayEventType!
+    workTime: TimeRangeInput
+    breakTime: TimeRangeInput
+}
+
+
+type Mutation {
+    logout: String!
+    changePassword(oldPassword: String!, newPassword: String!): String!
+
+    createDayEvent(input: DayEventInput): DayEvent!
+    updateDayEvent(input: DayEventInput): DayEvent
+    removeDayEvent(date: String): DayEvent
+
+}

@@ -1,0 +1,41 @@
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled:  true
+    corsEnabled: true
+
+spring:
+  profiles:
+      active: production
+  datasource:
+    platform: h2
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${JDBC_DATABASE_URL:}
+    driverClassName: org.postgresql.Driver
+  hikari:
+    connection-timeout: 30000
+    maximum-pool-size: 10
+  jpa:
+      database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+      hibernate:
+        ddl-auto: update
+
+  thymeleaf:
+      check-template-location: false
+      prefix: classpath:templates/
+      suffix: .html
+      mode: HTML5
+      encoding: UTF-8
+      content-type: text/html
+      cache: false
+
+logging:
+  level:
+    org.springframework: INFO
+
+server:
+  port: ${PORT:5000}
+
+authentication:
+  jwt:
+    secret: changeThisSecret123##&6332
