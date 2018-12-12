@@ -36,7 +36,8 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security:2.0.1.RELEASE'
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.0.1.RELEASE'
     compile  'io.jsonwebtoken:jjwt:0.9.0'
-    
+    compile 'javax.servlet:javax.servlet-api:4.0.1'
+
     compile group: 'com.graphql-java', name: 'graphql-java', version:'10.0'
     compile group: 'com.graphql-java', name: 'graphiql-spring-boot-starter', version:'4.0.0'
     compile group: 'com.graphql-java', name: 'graphql-java-tools', version:'5.2.4'
