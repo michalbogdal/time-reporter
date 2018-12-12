@@ -35,14 +35,11 @@ open class WebSecurity(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val source = UrlBasedCorsConfigurationSource()
-        val configuration = CorsConfiguration()
-        configuration.allowedMethods = Arrays.asList("GET", "POST", "PUT", "DELETE");
-        configuration.allowedHeaders = Arrays.asList("X-Requested-With","Origin","Content-Type","Accept","Authorization");
+        val configuration = CorsConfiguration().applyPermitDefaultValues()
 
         // This allow us to expose the headers
         configuration.exposedHeaders = Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
                 "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers")
-
 
         source.registerCorsConfiguration("/**", configuration)
         return source
