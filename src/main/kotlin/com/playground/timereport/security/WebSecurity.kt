@@ -23,7 +23,7 @@ open class WebSecurity(
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/app/*").authenticated()
                 .and()
                 .addFilter(JWTAuthenticationFilter(authenticationManager(), userDAO, tokenService))
                 .addFilter(JWTAuthorizationFilter(authenticationManager(), userDAO, tokenService))
@@ -32,7 +32,7 @@ open class WebSecurity(
     }
 
     @Bean
-    open fun corsConfigurationSource(): CorsConfigurationSource {
+    fun corsConfigurationSource(): CorsConfigurationSource {
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", CorsConfiguration().applyPermitDefaultValues())
         return source
