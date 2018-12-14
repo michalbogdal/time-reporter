@@ -1,5 +1,8 @@
 package com.playground.timereport.security
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.playground.timereport.dao.UserDAO
 import com.playground.timereport.security.SecurityConstants.HEADER_STRING
 import com.playground.timereport.security.SecurityConstants.LOGIN_URL
@@ -28,12 +31,15 @@ class JWTAuthenticationFilter(authenticationManager: AuthenticationManager?,
         super.setAuthenticationManager(authenticationManager)
     }
 
+
+    @JsonAutoDetect
+    data class LoginCredentials(@JsonProperty("username") val username: String, @JsonProperty("password") val password: String)
+
     @Throws(AuthenticationException::class)
     override fun attemptAuthentication(req: HttpServletRequest,
                                        res: HttpServletResponse): Authentication? {
-        val username: String? = req.getParameter(SPRING_SECURITY_FORM_USERNAME_KEY)
-        val pass: String? = req.getParameter(SPRING_SECURITY_FORM_PASSWORD_KEY)
-        return authenticationManager?.authenticate(UsernamePasswordAuthenticationToken(username, pass))
+        val loginCredentials = ObjectMapper().readValue(req.reader, LoginCredentials::class.java)
+        return authenticationManager?.authenticate(UsernamePasswordAuthenticationToken(loginCredentials.username, loginCredentials.password))
     }
 
     @Throws(IOException::class, ServletException::class)
