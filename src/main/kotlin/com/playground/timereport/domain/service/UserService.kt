@@ -16,10 +16,7 @@ class UserService(private val userRepository: UserRepository) {
     }
 
     fun invalidateToken(): String {
-        val authentication = SecurityContextHolder.getContext().authentication
-        val username = authentication?.principal.toString()
-        val user = userRepository.findByUsername(username)
-        return user.map { user ->
+        return getLoggedUser().map { user ->
             user.regenerateSalt()
             userRepository.save(user)
             "success"

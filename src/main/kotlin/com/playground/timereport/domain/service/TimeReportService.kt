@@ -20,7 +20,7 @@ class TimeReportService(
         return userService.getLoggedUser().map { user ->
             var timeReport: TimeReport? = timeReportRepository.findByUserAndForYearAndForMonth(user,   year, month)
             if (timeReport != null && onlyActiveDays) {
-                timeReport = TimeReport(user, timeReport.forYear, timeReport.forMonth, timeReport.events.asSequence().filter { dayEvent -> dayEvent.closeTime == null }.toMutableList())
+                timeReport = TimeReport(user.username, timeReport.forYear, timeReport.forMonth, timeReport.events.asSequence().filter { dayEvent -> dayEvent.closeTime == null }.toMutableList())
             }
             timeReport
         }.orElse(null)
@@ -36,7 +36,7 @@ class TimeReportService(
 
             var timeReport = timeReportRepository.findByUserAndForYearAndForMonth(user, date.year, date.month.value)
             if (timeReport == null) {
-                timeReport = TimeReport(user, date.year, date.month.value, mutableListOf())
+                timeReport = TimeReport(user.username, date.year, date.month.value, mutableListOf())
             }
 
             val currentDayEvent = timeReport.events.find { de -> de.date == date }

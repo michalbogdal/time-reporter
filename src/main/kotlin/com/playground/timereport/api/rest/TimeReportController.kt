@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*
 class TimeReportController(private val timeReportSerice: TimeReportService) {
 
     @GetMapping("/timereport/{year}/{month}")
-    fun getTimeReport(@PathVariable year: Int, @PathVariable month: Int): TimeReport? {
-        return timeReportSerice.getTimeReport(year, month)
+    fun getTimeReport(@PathVariable year: Int, @PathVariable month: Int, @RequestParam onlyActiveDays: Boolean = true): TimeReport? {
+        return timeReportSerice.getTimeReport(year, month, onlyActiveDays)
     }
 
     @PostMapping("/timereport")

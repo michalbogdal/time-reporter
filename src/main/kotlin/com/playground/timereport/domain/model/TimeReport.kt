@@ -7,9 +7,8 @@ import javax.persistence.*
 @Table(name = "time_report")
 data class TimeReport(
 
-        @ManyToOne
-        @JoinColumn(name = "username")
-        val user: User,
+        @Column(name = "username", nullable = false)
+        val username: String,
 
         @Column(name = "for_year", nullable = false)
         val forYear: Int,
