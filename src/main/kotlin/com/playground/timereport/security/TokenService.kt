@@ -24,15 +24,15 @@ class TokenService(
 
         const val APP = "app"
         const val USERNAME = "username"
-        const val SID = "sid"
+        const val SALT = "salt"
     }
 
-    fun createToken(username: String, sid: String): String {
+    fun createToken(username: String, salt: String): String {
 
         val claims: HashMap<String, Any?> = HashMap()
         claims.put(APP, APP_NAME)
         claims.put(USERNAME, username)
-        claims.put(SID, sid)
+        claims.put(SALT, salt)
 
         val appSecret = env.getProperty(JWT_SECRET_PROPERTY)
 

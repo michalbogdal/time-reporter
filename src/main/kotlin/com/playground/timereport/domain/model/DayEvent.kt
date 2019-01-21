@@ -1,4 +1,4 @@
-package com.playground.timereport.model
+package com.playground.timereport.domain.model
 
 import java.time.LocalDate
 import java.time.LocalDateTime

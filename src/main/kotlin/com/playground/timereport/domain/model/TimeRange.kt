@@ -1,4 +1,4 @@
-package com.playground.timereport.model
+package com.playground.timereport.domain.model
 
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit

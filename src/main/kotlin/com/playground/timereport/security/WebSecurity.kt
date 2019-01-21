@@ -1,9 +1,8 @@
 package com.playground.timereport.security
 
-import com.playground.timereport.dao.UserDAO
+import com.playground.timereport.domain.repository.UserRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpMethod
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -16,7 +15,7 @@ import java.util.*
 
 @EnableWebSecurity
 open class WebSecurity(
-        private val userDAO: UserDAO,
+        private val userRepository: UserRepository,
         private val tokenService: TokenService
 ) : WebSecurityConfigurerAdapter(false) {
 
@@ -26,8 +25,8 @@ open class WebSecurity(
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers("/app/**").authenticated()
                 .and()
-                .addFilter(JWTAuthenticationFilter(authenticationManager(), userDAO, tokenService))
-                .addFilter(JWTAuthorizationFilter(authenticationManager(), userDAO, tokenService))
+                .addFilter(JWTAuthenticationFilter(authenticationManager(), userRepository, tokenService))
+                .addFilter(JWTAuthorizationFilter(authenticationManager(), userRepository, tokenService))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
@@ -45,4 +44,12 @@ open class WebSecurity(
         source.registerCorsConfiguration("/**", configuration)
         return source
     }
+
+   /* @Bean
+    fun userDetailsService(userRepository: UserRepository): UserDetailsService {
+        return username -> userRepository.findByUsername(username).map(
+            user -> User(user.username, user.password, ArrayList<GrantedAuthority>())
+        )
+        .orElseThrow( () -> UsernameNotFoundException(username))
+    }*/
 }

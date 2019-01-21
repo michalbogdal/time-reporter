@@ -1,6 +1,6 @@
 package com.playground.timereport.security
 
-import com.playground.timereport.dao.UserDAO
+import com.playground.timereport.domain.repository.UserRepository
 import com.playground.timereport.security.SecurityConstants.HEADER_STRING
 import com.playground.timereport.security.SecurityConstants.TOKEN_PREFIX
 import org.springframework.security.authentication.AbstractAuthenticationToken
@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletResponse
 
 
 class JWTAuthorizationFilter(authenticationManager: AuthenticationManager?,
-                            private val userDAO: UserDAO,
-                            private val tokenService: TokenService
+                             private val userRepository: UserRepository,
+                             private val tokenService: TokenService
 ) : BasicAuthenticationFilter(authenticationManager) {
 
     @Throws(IOException::class, ServletException::class)
@@ -47,10 +47,10 @@ class JWTAuthorizationFilter(authenticationManager: AuthenticationManager?,
             if(tokenClaims != null) {
 
                 val username = tokenClaims.body[TokenService.USERNAME].toString()
-                val sid = tokenClaims.body[TokenService.SID].toString()
-                val user = userDAO.findByUsername(username)
+                val salt = tokenClaims.body[TokenService.SALT].toString()
+                val user = userRepository.findByUsername(username)
 
-                if (sid == user?.getSid()) {
+                if (salt == user.map { user -> user.getSalt() }.orElse("")) {
                     return UsernamePasswordAuthenticationToken(username, null, ArrayList<GrantedAuthority>())
                 }
             }

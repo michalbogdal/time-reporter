@@ -1,4 +1,4 @@
-package com.playground.timereport.model
+package com.playground.timereport.domain.model
 
 import com.google.common.hash.Hashing
 import java.nio.charset.Charset
@@ -28,22 +28,21 @@ data class User(
         }
     }
 
-    @Column(name = "sid")
-    private var sid: String
+    @Column(name = "salt")
+    private var salt: String
 
-    fun getSid() = this.sid
+    fun getSalt() = this.salt
 
     init {
         this.password = encodeWithMD5(password)
-        this.sid = generateRandomSid()
+        this.salt = generateSalt()
     }
 
-
-    private fun generateRandomSid(): String {
+    private fun generateSalt(): String {
         return UUID.randomUUID().toString()
     }
 
-    fun regenerateSid(){
-        this.sid = generateRandomSid()
+    fun regenerateSalt(){
+        this.salt = generateSalt()
     }
 }

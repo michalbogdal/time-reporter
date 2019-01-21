@@ -1,4 +1,4 @@
-package com.playground.timereport.service
+package com.playground.timereport.domain.service
 
 import org.springframework.core.io.ClassPathResource
 import org.springframework.util.StreamUtils

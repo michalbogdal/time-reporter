@@ -1,4 +1,4 @@
-package com.playground.timereport.model
+package com.playground.timereport.domain.model
 
 import java.time.LocalDate
 import javax.persistence.*
@@ -6,6 +6,10 @@ import javax.persistence.*
 @Entity
 @Table(name = "time_report")
 data class TimeReport(
+
+        @ManyToOne
+        @JoinColumn(name = "username")
+        val user: User,
 
         @Column(name = "for_year", nullable = false)
         val forYear: Int,

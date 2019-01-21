@@ -1,4 +1,4 @@
-package com.playground.timereport.model
+package com.playground.timereport.domain.model
 
 enum class DayEventType {
     OFFICE,

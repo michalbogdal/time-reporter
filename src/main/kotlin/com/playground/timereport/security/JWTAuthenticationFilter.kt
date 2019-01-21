@@ -3,7 +3,7 @@ package com.playground.timereport.security
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.playground.timereport.dao.UserDAO
+import com.playground.timereport.domain.repository.UserRepository
 import com.playground.timereport.security.SecurityConstants.HEADER_STRING
 import com.playground.timereport.security.SecurityConstants.LOGIN_URL
 import com.playground.timereport.security.SecurityConstants.TOKEN_PREFIX
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse
 
 
 class JWTAuthenticationFilter(authenticationManager: AuthenticationManager?,
-                              private val userDAO: UserDAO,
+                              private val userRepository: UserRepository,
                               private val tokenService: TokenService
 ) : UsernamePasswordAuthenticationFilter() {
 
@@ -49,9 +49,9 @@ class JWTAuthenticationFilter(authenticationManager: AuthenticationManager?,
                                           auth: Authentication) {
 
         val username = (auth.principal as User).username
-        val user = userDAO.findByUsername(username)
+        val user = userRepository.findByUsername(username)
 
-        val token = tokenService.createToken(username, user?.getSid().orEmpty())
+        val token = tokenService.createToken(username, user.map { user -> user.getSalt() }.orElse(""))
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token)
     }
 }
