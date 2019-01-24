@@ -18,7 +18,7 @@ class TimeReportService(
 
     fun getTimeReport(year: Int, month: Int, onlyActiveDays: Boolean = true): TimeReport? {
         return userService.getLoggedUser().map { user ->
-            var timeReport: TimeReport? = timeReportRepository.findByUserAndForYearAndForMonth(user,   year, month)
+            var timeReport: TimeReport? = timeReportRepository.findByUsernameAndForYearAndForMonth(user.username,   year, month)
             if (timeReport != null && onlyActiveDays) {
                 timeReport = TimeReport(user.username, timeReport.forYear, timeReport.forMonth, timeReport.events.asSequence().filter { dayEvent -> dayEvent.closeTime == null }.toMutableList())
             }
@@ -34,7 +34,7 @@ class TimeReportService(
             val breakTime = TimeRange(from = LocalTime.parse(input.breakTime.from), to = LocalTime.parse(input.breakTime.to))
             val dayEvent = DayEvent(date = date, type = input.type, workTime = workTime, breakTime = breakTime)
 
-            var timeReport = timeReportRepository.findByUserAndForYearAndForMonth(user, date.year, date.month.value)
+            var timeReport = timeReportRepository.findByUsernameAndForYearAndForMonth(user.username, date.year, date.month.value)
             if (timeReport == null) {
                 timeReport = TimeReport(user.username, date.year, date.month.value, mutableListOf())
             }
@@ -52,7 +52,7 @@ class TimeReportService(
         return userService.getLoggedUser().map { user ->
             val date = LocalDate.parse(input.date)
             var dayEvent: DayEvent? = null
-            var timeReport = timeReportRepository.findByUserAndForYearAndForMonth(user, date.year, date.month.value)
+            var timeReport = timeReportRepository.findByUsernameAndForYearAndForMonth(user.username, date.year, date.month.value)
             if (timeReport != null) {
 
                 val currentDayEvent = timeReport.events.find { dayEvent -> dayEvent.date == date }
@@ -74,7 +74,7 @@ class TimeReportService(
         return userService.getLoggedUser().map { user ->
             val date = LocalDate.of(year, month, day)
             var toDeleteEvent: DayEvent? = null
-            var timeReport = timeReportRepository.findByUserAndForYearAndForMonth(user, year, month)
+            var timeReport = timeReportRepository.findByUsernameAndForYearAndForMonth(user.username, year, month)
             if (timeReport != null) {
                 val toDeleteEvent = timeReport.events.find { dayEvent -> dayEvent.date == date }
                 if (toDeleteEvent != null && toDeleteEvent.closeTime == null) {
