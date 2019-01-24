@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TimeReportRepository : JpaRepository<TimeReport, Int> {
 
-    fun findByUserAndForYearAndForMonth(user: User, year: Int, month: Int): TimeReport?
+    fun findByUsernameAndForYearAndForMonth(username: String, year: Int, month: Int): TimeReport?
 }
